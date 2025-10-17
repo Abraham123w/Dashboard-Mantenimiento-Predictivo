@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard de Riesgo - Cámaras de Aguas Lluvias</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/papaparse@5.3.2/papaparse.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <h1>Dashboard de Riesgo - Cámaras de Aguas Lluvias</h1>
+                <div class="header-actions">
+                    <label for="file-input" class="file-upload">Cargar Archivo CSV</label>
+                    <input type="file" id="file-input" accept=".csv">
+                    <button id="export-pdf" class="btn-secondary">Exportar a PDF</button>
+                </div>
+            </div>
+        </div>
+    </header>
+    
+    <div class="container">
+        <!-- Filtros -->
+        <div class="filter-controls">
+            <div class="filter-group">
+                <label for="date-filter">Fecha de análisis:</label>
+                <select id="date-filter">
+                    <option value="">Cargando fechas...</option>
+                </select>
+            </div>
+        </div>
+        
+        <!-- KPI Principal -->
+        <div class="kpi-card">
+            <div class="kpi-header">
+                <h2>Unidad Vecinal con Máximo Riesgo</h2>
+                <span id="kpi-date" class="kpi-date"></span>
+            </div>
+            <div class="kpi-content">
+                <div class="kpi-value" id="max-risk-uv">-</div>
+                <div class="kpi-probability" id="max-risk-prob">-</div>
+            </div>
+        </div>
+        
+        <!-- Contenido Principal -->
+        <div class="dashboard-grid">
+            <!-- Lista de Trabajo Priorizada -->
+            <div class="card main-card">
+                <div class="card-header">
+                    <h2>Lista de Trabajo Priorizada</h2>
+                    <span id="priority-count" class="badge">0 unidades</span>
+                </div>
+                <div class="card-content">
+                    <table class="data-table" id="priority-table">
+                        <thead>
+                            <tr>
+                                <th>Unidad Vecinal</th>
+                                <th>Probabilidad Riesgo Alto</th>
+                                <th>Lluvia Predicha (mm)</th>
+                                <th>Estado</th>
+                            </tr>
+                        </thead>
+                        <tbody id="priority-tbody">
+                            <tr>
+                                <td colspan="4" class="no-data">Cargue un archivo CSV para visualizar los datos</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <!-- Gráfico Comparativo -->
+            <div class="card">
+                <div class="card-header">
+                    <h2>Comparación de Riesgos por Unidad Vecinal</h2>
+                </div>
+                <div class="card-content">
+                    <div class="chart-container">
+                        <canvas id="riskComparisonChart"></canvas>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Puntos Crónicos -->
+            <div class="card">
+                <div class="card-header">
+                    <h2>Puntos Crónicos (Alertas Históricas)</h2>
+                    <div class="time-filter">
+                        <select id="historical-period">
+                            <option value="3">3 meses</option>
+                            <option value="6">6 meses</option>
+                            <option value="12" selected>12 meses</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="card-content">
+                    <table class="data-table" id="chronic-table">
+                        <thead>
+                            <tr>
+                                <th>Unidad Vecinal</th>
+                                <th>Alertas Alto Riesgo</th>
+                                <th>% del Total</th>
+                            </tr>
+                        </thead>
+                        <tbody id="chronic-tbody">
+                            <tr>
+                                <td colspan="3" class="no-data">Cargue un archivo CSV para visualizar los datos</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <!-- Correlación Lluvia vs Riesgo -->
+            <div class="card">
+                <div class="card-header">
+                    <h2>Correlación: Lluvia vs. Probabilidad de Riesgo</h2>
+                </div>
+                <div class="card-content">
+                    <div class="chart-container">
+                        <canvas id="correlationChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <footer>
+        <div class="container">
+            <p>Sistema de Monitoreo Predictivo - Cámaras de Aguas Lluvias</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
